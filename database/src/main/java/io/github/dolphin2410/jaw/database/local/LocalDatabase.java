@@ -12,6 +12,7 @@ import io.github.dolphin2410.jaw.util.core.Nothing;
 import io.github.dolphin2410.jaw.util.io.LocalFile;
 import io.github.dolphin2410.jaw.util.kotlin.KWrapper;
 
+import java.io.IOException;
 import java.util.concurrent.CompletableFuture;
 
 /**
@@ -33,8 +34,12 @@ public final class LocalDatabase implements Database {
     @Override
     public void validateDatabase() {
         try {
+            // What if directory? I don't care. Reading string from data will cause an exception anyways.
+            if (!file.getFile().exists()) {
+                file.getFile().createNewFile();
+            }
             JsonParser.parseString(file.readAllContents());
-        } catch (JsonParseException e) {
+        } catch (IOException | JsonParseException e) {
             throw new RuntimeException(e);
         }
     }

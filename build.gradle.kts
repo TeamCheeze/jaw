@@ -2,33 +2,68 @@ plugins {
     java
     `maven-publish`
     signing
-    id("org.jetbrains.dokka") version "1.5.0"
 }
 
 group = "io.github.dolphin2410"
-version = "1.0.0"
+version = "1.0.1"
 
 repositories {
     mavenCentral()
 }
 
-dependencies {
-    implementation("org.jetbrains:annotations:20.1.0")
-    implementation("com.google.code.gson:gson:2.8.7")
-    compileOnly("com.google.firebase:firebase-admin:7.3.0")
-    compileOnly("org.xerial:sqlite-jdbc:3.36.0.1")
+subprojects {
+    apply(plugin="java")
+    if (this != project(":core")) {
+        dependencies {
+            compileOnly(project(":core"))
+        }
+    }
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        implementation("org.jetbrains:annotations:20.1.0")
+        implementation("com.google.code.gson:gson:2.8.7")
+    }
+}
+project(":database") {
+    dependencies {
+        compileOnly("com.google.firebase:firebase-admin:7.3.0")
+        compileOnly("org.xerial:sqlite-jdbc:3.36.0.1")
+    }
 }
 
 tasks {
     create<Jar>("sourcesJar") {
         archiveClassifier.set("sources")
-        from(sourceSets["main"].allSource)
+        subprojects.forEach {
+            from(it.sourceSets["main"].allSource)
+        }
     }
     create<Jar>("javadocJar") {
         archiveClassifier.set("javadoc")
-        dependsOn("dokkaHtml")
-        from("$buildDir/dokka/html/") {
-            include("**")
+        duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+        subprojects.forEach {
+            from(it.tasks.javadoc)
+        }
+    }
+    create<Jar>("databaseJar") {
+        archiveClassifier.set("database")
+        from(project(":database").sourceSets["main"].allSource)
+    }
+    create<Jar>("coreJar") {
+        archiveClassifier.set("core")
+        from(project(":core").sourceSets["main"].allSource)
+    }
+    create<Jar>("allJar") {
+        archiveClassifier.set("jar-all")
+        subprojects.forEach {
+            from(it.sourceSets["main"].allSource)
+        }
+    }
+    jar {
+        subprojects.forEach {
+            from(it.sourceSets["main"].allSource)
         }
     }
 }
@@ -39,7 +74,9 @@ publishing {
             from(components["java"])
             artifact(tasks["sourcesJar"])
             artifact(tasks["javadocJar"])
-
+            artifact(tasks["databaseJar"])
+            artifact(tasks["coreJar"])
+            artifact(tasks["allJar"])
             repositories {
                 mavenLocal()
                 maven {
@@ -63,8 +100,8 @@ publishing {
             }
             pom {
                 name.set("jaw")
-                description.set("core api library")
-                url.set("https://github.com/dolphin2410/jaw")
+                description.set("Welcome to the Jaw library!")
+                url.set("https://github.com/TeamCheeeze/jaw")
                 licenses {
                     license {
                         name.set("The MIT License")
@@ -80,9 +117,9 @@ publishing {
                     }
                 }
                 scm {
-                    connection.set("scm:git:git://github.com/dolphin2410/jaw.git")
-                    developerConnection.set("scm:git:ssh://github.com/dolphin2410/jaw.git")
-                    url.set("https://github.com/dolphin2410/jaw")
+                    connection.set("scm:git:git://github.com/TeamCheeze/jaw.git")
+                    developerConnection.set("scm:git:ssh://github.com/TeamCheeze/jaw.git")
+                    url.set("https://github.com/TeamCheeze/jaw")
                 }
             }
         }
@@ -91,6 +128,6 @@ publishing {
 
 signing {
     isRequired = true
-    sign(tasks["sourcesJar"], tasks["javadocJar"])
+    sign(tasks["sourcesJar"], tasks["javadocJar"], tasks["databaseJar"], tasks["coreJar"], tasks["allJar"], project.tasks.jar.get())
     sign(publishing.publications["mavenPublication"])
 }
