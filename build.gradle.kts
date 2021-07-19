@@ -4,12 +4,8 @@ plugins {
     signing
 }
 
-group = "io.github.dolphin2410"
+group = "io.github.teamcheeze"
 version = "1.0.1"
-
-repositories {
-    mavenCentral()
-}
 
 subprojects {
     apply(plugin="java")
@@ -38,6 +34,7 @@ tasks {
         archiveClassifier.set("sources")
         subprojects.forEach {
             from(it.sourceSets["main"].allSource)
+            from(it.sourceSets["main"].output)
         }
     }
     create<Jar>("javadocJar") {
@@ -50,20 +47,24 @@ tasks {
     create<Jar>("databaseJar") {
         archiveClassifier.set("database")
         from(project(":database").sourceSets["main"].allSource)
+        from(project(":database").sourceSets["main"].output)
     }
     create<Jar>("coreJar") {
         archiveClassifier.set("core")
         from(project(":core").sourceSets["main"].allSource)
+        from(project(":core").sourceSets["main"].output)
     }
     create<Jar>("allJar") {
         archiveClassifier.set("jar-all")
         subprojects.forEach {
             from(it.sourceSets["main"].allSource)
+            from(it.sourceSets["main"].output)
         }
     }
     jar {
         subprojects.forEach {
             from(it.sourceSets["main"].allSource)
+            from(it.sourceSets["main"].output)
         }
     }
 }
@@ -112,7 +113,7 @@ publishing {
                     developer {
                         id.set("dolphin2410")
                         name.set("dolphin2410")
-                        email.set("dolphin2410@outlook.kr")
+                        email.set("teamcheeze@outlook.kr")
                         timezone.set("GMT+9")
                     }
                 }
