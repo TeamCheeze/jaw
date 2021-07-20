@@ -1,5 +1,12 @@
+## 1.0.2
+***This version only has minor fixes***
+### Added
+- When creating an empty json file if file doesn't exist on LocalDB initialize, it adds an empty json object (`{}`)
+### Modified
+- Jaw no longer shades `Gson`. It has to be provided separately during runtime.
+### BugFix
+- Fixed the bug - module `jar-all` was created instead of `jaw-all` due to a spelling mistake.
 ## 1.0.1
-***
 ***This project has moved from dolphin2410 to TeamCheeze***
 ### Added
 - Automatically create a database file if doesn't exist in LocalDB
@@ -8,8 +15,22 @@
 - Created submodules for developers who don't use the database feature
 ### Modified
 - Upgraded build.gradle.kts
+### Beta
+*This version is beta now*
+You can separately access the features now.
+- Database only
+
+`implementation("io.github.teamcheeze:jaw:1.0.1:database")`.
+- Core features only
+
+`implementation("io.github.teamcheeze:jaw:1.0.1:core")`.
+
+- All features
+
+`implementation("io.github.teamcheeze:jaw:1.0.1")`
+or
+`implementation("io.github.teamcheeze:jaw:1.0.1:jaw-all")`
 ## 1.0.0
-***
 ### Added
 - Translated, fixed bugs and upgraded the reflection feature of kolleague
 - Translated and added java support to asynchronous http request

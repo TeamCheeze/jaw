@@ -5,7 +5,7 @@ plugins {
 }
 
 group = "io.github.teamcheeze"
-version = "1.0.1"
+version = "1.0.2"
 
 subprojects {
     apply(plugin="java")
@@ -19,7 +19,7 @@ subprojects {
     }
     dependencies {
         implementation("org.jetbrains:annotations:20.1.0")
-        implementation("com.google.code.gson:gson:2.8.7")
+        compileOnly("com.google.code.gson:gson:2.8.7")
     }
 }
 project(":database") {
@@ -55,7 +55,7 @@ tasks {
         from(project(":core").sourceSets["main"].output)
     }
     create<Jar>("allJar") {
-        archiveClassifier.set("jar-all")
+        archiveClassifier.set("jaw-all")
         subprojects.forEach {
             from(it.sourceSets["main"].allSource)
             from(it.sourceSets["main"].output)

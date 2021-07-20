@@ -37,6 +37,7 @@ public final class LocalDatabase implements Database {
             // What if directory? I don't care. Reading string from data will cause an exception anyways.
             if (!file.getFile().exists()) {
                 file.getFile().createNewFile();
+                file.writeContent("{}");
             }
             JsonParser.parseString(file.readAllContents());
         } catch (IOException | JsonParseException e) {
