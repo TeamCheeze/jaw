@@ -1,10 +1,10 @@
 package io.github.dolphin2410.jaw.apis.github.internal;
 
 import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 import io.github.dolphin2410.jaw.apis.util.Apis;
 import io.github.dolphin2410.jaw.util.async.AsyncRequest;
 import io.github.dolphin2410.jaw.util.async.RestMethod;
+import io.github.dolphin2410.jaw.util.gson.JsonParserWrapper;
 
 import java.net.http.HttpResponse;
 import java.util.concurrent.CompletableFuture;
@@ -38,7 +38,7 @@ public record GithubRepo(String repositoryName, GithubUser owner, String languag
                 Apis.GITHUB_API.concentrate("repos/" + user.username() + "/" + repoName), RestMethod.GET).send(null);
         final JsonObject json_data;
         try {
-            json_data = JsonParser.parseString(future.get().body()).getAsJsonObject();
+            json_data = JsonParserWrapper.parseString(future.get().body()).getAsJsonObject();
         }
         catch (ExecutionException | InterruptedException e) {
             throw new GithubRepoException(e.toString());

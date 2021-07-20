@@ -3,7 +3,7 @@ package io.github.dolphin2410.jaw.apis.github.internal;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
+import io.github.dolphin2410.jaw.util.gson.JsonParserWrapper;
 import io.github.dolphin2410.jaw.util.io.OnlineFile;
 import io.github.dolphin2410.jaw.apis.util.Apis;
 import io.github.dolphin2410.jaw.util.async.AsyncRequest;
@@ -48,7 +48,7 @@ public record GithubArchive(GithubRepo repo, String name, String version, Online
         ).send();
         JsonElement response;
         try {
-            response = JsonParser.parseString(all_releases.get().body());
+            response = JsonParserWrapper.parseString(all_releases.get().body());
         } catch (InterruptedException | ExecutionException e) {
             throw new GithubArchiveException(e.toString());
         }
@@ -80,7 +80,7 @@ public record GithubArchive(GithubRepo repo, String name, String version, Online
         ).send();
         JsonObject jsonLatestRelease;
         try {
-            jsonLatestRelease = JsonParser.parseString(latestRelease.get().body()).getAsJsonObject();
+            jsonLatestRelease = JsonParserWrapper.parseString(latestRelease.get().body()).getAsJsonObject();
         } catch (InterruptedException | ExecutionException e) {
             throw new GithubArchiveException(e.toString());
         }

@@ -2,16 +2,15 @@ package io.github.dolphin2410.jaw.database.local;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
-import com.google.gson.JsonParser;
 import io.github.dolphin2410.jaw.database.core.Database;
 import io.github.dolphin2410.jaw.database.core.DatabaseType;
 import io.github.dolphin2410.jaw.util.async.Async;
 import io.github.dolphin2410.jaw.util.collection.IndexedList;
 import io.github.dolphin2410.jaw.util.collection.Pair;
 import io.github.dolphin2410.jaw.util.core.Nothing;
+import io.github.dolphin2410.jaw.util.gson.JsonParserWrapper;
 import io.github.dolphin2410.jaw.util.io.LocalFile;
 import io.github.dolphin2410.jaw.util.kotlin.KWrapper;
-
 import java.io.IOException;
 import java.util.concurrent.CompletableFuture;
 
@@ -39,7 +38,7 @@ public final class LocalDatabase implements Database {
                 file.getFile().createNewFile();
                 file.writeContent("{}");
             }
-            JsonParser.parseString(file.readAllContents());
+            JsonParserWrapper.parseString(file.readAllContents());
         } catch (IOException | JsonParseException e) {
             throw new RuntimeException(e);
         }
@@ -47,7 +46,7 @@ public final class LocalDatabase implements Database {
     private CompletableFuture<JsonObject> _readAsync() {
         validateDatabase();
         CompletableFuture<JsonObject> future = new CompletableFuture<>();
-        Async.execute(()-> future.complete(JsonParser.parseString(file.readAllContents().equals("") ? KWrapper.apply("{}", file::writeContent) : file.readAllContents()).getAsJsonObject()));
+        Async.execute(()-> future.complete(JsonParserWrapper.parseString(file.readAllContents().equals("") ? KWrapper.apply("{}", file::writeContent) : file.readAllContents()).getAsJsonObject()));
         return future;
     }
     private CompletableFuture<Nothing> _writeAsync(String key, String value) {
@@ -58,7 +57,7 @@ public final class LocalDatabase implements Database {
         read();
         CompletableFuture<Nothing> future = new CompletableFuture<>();
         Async.execute(()->{
-            JsonObject databaseContent = JsonParser.parseString(file.readAllContents()).getAsJsonObject();
+            JsonObject databaseContent = JsonParserWrapper.parseString(file.readAllContents()).getAsJsonObject();
             JsonObject currentObject = databaseContent;
             IndexedList<String> subKeys = IndexedList.of(key.replace(".", "/").replace("-", "/").split("/"));
             for (Pair<Integer, String> subKey : subKeys) {

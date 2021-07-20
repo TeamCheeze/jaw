@@ -3,11 +3,11 @@ package io.github.dolphin2410.jaw.database.firebase;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.database.*;
 import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 import io.github.dolphin2410.jaw.database.core.Database;
 import io.github.dolphin2410.jaw.database.core.DatabaseType;
 import io.github.dolphin2410.jaw.reflection.FieldAccessor;
 import io.github.dolphin2410.jaw.util.core.Nothing;
+import io.github.dolphin2410.jaw.util.gson.JsonParserWrapper;
 
 import java.util.concurrent.CompletableFuture;
 
@@ -63,7 +63,7 @@ public final class FireDatabase implements Database {
         ref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
-                future.complete(JsonParser.parseString(snapshot.getValue().toString()).getAsJsonObject());
+                future.complete(JsonParserWrapper.parseString(snapshot.getValue().toString()).getAsJsonObject());
             }
 
             @Override
