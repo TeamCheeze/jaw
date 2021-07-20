@@ -1,7 +1,8 @@
 ## 1.0.2
 ***This version only has minor fixes***
 ### Added
-- When creating an empty json file if file doesn't exist on LocalDB initialize, it adds an empty json object (`{}`)
+- `JsonParserWrapper` covers the old `Gson`'s `JsonParser` which don't have a static `parseString` or `parseReader` method.
+- When creating an empty json file if file doesn't exist on `LocalDatabase` initialize, it adds an empty json object (`{}`)
 ### Modified
 - Jaw no longer shades `Gson`. It has to be provided separately during runtime.
 ### BugFix
@@ -9,12 +10,12 @@
 ## 1.0.1
 ***This project has moved from dolphin2410 to TeamCheeze***
 ### Added
-- Automatically create a database file if doesn't exist in LocalDB
+- Automatically create a database file if doesn't exist in `LocalDatabase`
 ### Removed
 - Removed Dokka since this is a java project.
 - Created submodules for developers who don't use the database feature
 ### Modified
-- Upgraded build.gradle.kts
+- Updated `build.gradle.kts`
 ### Beta
 *This version is beta now*
 You can separately access the features now.
