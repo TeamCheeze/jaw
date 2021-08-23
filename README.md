@@ -1,4 +1,4 @@
-# Jaw v1.0.1
+# Jaw v1.0.2
 ### Introduction
 Jaw is a java library, created in attempt to make a better library for all JVM developers. 
 In order to remove unnecessary additional dependencies like 'kotlin stdlib' in the development environment, and java-incompatible features like reified generics, I decided to translate the 'dolphin2410/kolleague' project to java, while also fixing issues and adding new features.
@@ -13,19 +13,19 @@ In order to remove unnecessary additional dependencies like 'kotlin stdlib' in t
 To use only the core features, like Reflection, Collection and Utility functions, use this.
 
 ```kotlin
-implementation("io.github.teamcheeze:jaw:1.0.1:core")
+implementation("io.github.teamcheeze:jaw:1.0.2:core")
 ```
 If the core feature is already provided during runtime, and you want to use only the database functions,
 
 ```kotlin
-implementation("io.github.teamcheeze:jaw:1.0.1:database")
+implementation("io.github.teamcheeze:jaw:1.0.2:database")
 ```
 Otherwise, to use them all, either of the following will work.
 
 ```kotlin
-implementation("io.github.teamcheeze:jaw:1.0.1:sources")
-implementation("io.github.teamcheeze:jaw:1.0.1:jaw-all")
-implementation("io.github.teamcheeze:jaw:1.0.1")
+implementation("io.github.teamcheeze:jaw:1.0.2:sources")
+implementation("io.github.teamcheeze:jaw:1.0.2:jaw-all")
+implementation("io.github.teamcheeze:jaw:1.0.2")
 ```
 
 ### Contributing
